@@ -9,6 +9,7 @@ import logging
 # App-specific modules
 import Config as config
 import Database as db
+from Utilities import NovaTimeConvert
 
 # Argument parsing
 parser = argparse.ArgumentParser(description = 'Timing System Log File Parser')
@@ -48,9 +49,9 @@ for lineno in range(0, len(lines)):
         # Parse message body
         match = re.match(r'Spilltype: (.*)\((\d+)\) \(evt (.*)\) novaTime .* (\d+)', msgBody, re.M|re.I)
         spillTypeName = match.group(1)
-        spillTypeID   = match.group(2)
+        spillTypeID   = int(match.group(2))
         spillAccelEvt = match.group(3)
-        spillTime     = match.group(4)
+        spillTime     = NovaTimeConvert.convertNovaTimeToUnixTime(int(match.group(4)))
 
         logging.debug('Found spill type {} ({}), event code {} at time {}'.format(spillTypeName, spillTypeID, spillAccelEvt, spillTime))
 
