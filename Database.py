@@ -12,7 +12,7 @@ class Logfile(Base):
     __tablename__ = 'logfiles'
 
     id = Column(Integer, primary_key = True)
-    filename = Column(String, nullable = False)
+    filename = Column(String, nullable = False, unique = True)
 
 
 class SpillType(Base):
