@@ -31,11 +31,11 @@ class Spill(Base):
 
     id = Column(Integer, primary_key = True)
     spill_type_id = Column(Integer, ForeignKey('spill_types.id'), nullable = False)
-    time_spillserver = Column(DateTime)
-    time_fwd_near = Column(DateTime)
-    time_rec_near = Column(DateTime)
-    time_fwd_far = Column(DateTime)
-    time_rec_far = Column(DateTime)
+    time_spillserver = Column(Integer)
+    time_fwd_near = Column(Integer)
+    time_rec_near = Column(Integer)
+    time_fwd_far = Column(Integer)
+    time_rec_far = Column(Integer)
 
 
 class Heartbeat(Base):

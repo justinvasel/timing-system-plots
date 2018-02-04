@@ -5,6 +5,7 @@ import argparse
 import re
 import sys
 import logging
+
 # App-specific modules
 import Config as config
 import Database as db
@@ -34,7 +35,7 @@ for lineno in range(0, len(lines)):
     line = lines[lineno].rstrip()
 
     # Get the message type
-    match = re.match( r'%MSG-i (.*): .*', line, re.M|re.I)
+    match = re.match(r'%MSG-i (.*): .*', line, re.M|re.I)
     if match == None:
         continue
     msgType = match.group(1)
@@ -42,6 +43,24 @@ for lineno in range(0, len(lines)):
     # Perform an appropriate action depending on the message type
     if msgType == 'SpillSent':
         logging.debug('I will process a {} message type'.format(msgType))
+        msgBody = lines[lineno + 1].rstrip()
+
+        # Parse message body
+        match = re.match(r'Spilltype: (.*)\((\d+)\) \(evt (.*)\) novaTime .* (\d+)', msgBody, re.M|re.I)
+        spillTypeName = match.group(1)
+        spillTypeID   = match.group(2)
+        spillAccelEvt = match.group(3)
+        spillTime     = match.group(4)
+
+        logging.debug('Found spill type {} ({}), event code {} at time {}'.format(spillTypeName, spillTypeID, spillAccelEvt, spillTime))
+
+        # Update database with spill type
+        if db.session.query(db.SpillType).filter(db.SpillType.id == spillTypeID).first() == None:
+            logging.info("Adding spill type {} ({}) to the database".format(spillTypeID, spillTypeName))
+            db.session.add(db.SpillType(id = spillTypeID, name = spillTypeName, evtcode = spillAccelEvt))
+
+        # Update database with spill
+        db.session.add(db.Spill(spill_type_id = spillTypeID, time_spillserver = spillTime))
 
     if msgType == 'TimeDrift':
         logging.debug('I will process a {} message type'.format(msgType))
@@ -51,8 +70,6 @@ for lineno in range(0, len(lines)):
 
     if msgType == 'TimeSync':
         logging.debug('I will process a {} message type'.format(msgType))
-
-    # print "Next line: ", lines[lineno + 1].rstrip()
 
     if lineno > 100:
         break
