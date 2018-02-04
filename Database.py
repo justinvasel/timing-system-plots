@@ -2,10 +2,9 @@ from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, DateTime, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
-# CONFIGURATION
-SQL_DATABASE = 'sqlite:///data/timing.db'
+import Config as config
 
-engine = create_engine(SQL_DATABASE, echo = True)
+engine = create_engine(config.SQL_DATABASE, echo = True)
 Base = declarative_base()
 
 
