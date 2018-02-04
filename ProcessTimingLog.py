@@ -39,7 +39,13 @@ for lineno in range(0, len(lines)):
     if msgType == 'TimeDrift':
         print('I will process a {} message type'.format(msgType))
 
+    if msgType == 'HeartBeat':
+        print('I will process a {} message type'.format(msgType))
+
+    if msgType == 'TimeSync':
+        print('I will process a {} message type'.format(msgType))
+
     # print "Next line: ", lines[lineno + 1].rstrip()
 
-    if lineno > 10:
+    if lineno > 100:
         break
