@@ -4,5 +4,6 @@
 # Python junk
 *.pyc
 
-# Virtual environment
+# Directories
+data
 env
