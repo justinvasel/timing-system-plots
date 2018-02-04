@@ -1,0 +1,8 @@
+# Operating system
+.DS_Store
+
+# Python junk
+*.pyc
+
+# Virtual environment
+env
