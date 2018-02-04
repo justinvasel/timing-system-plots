@@ -1,5 +1,9 @@
-# NOVA TIME CONVERT UTILITY
-# This module provides function to convert between the NOvA and unix epochs
+# /////////////////////////////////////////////////////////////////////////////
+#  NOvA TIME CONVERT UTILITY
+#  \brief   Convert between the NOvA and unix epochs
+#  \author  Justin Vasel <jvasel@indiana.edu>
+#  \date    February 2018
+# /////////////////////////////////////////////////////////////////////////////
 
 # Number of clock ticks per second (64 MHz)
 NOVA_TIME_FACTOR = 64000000

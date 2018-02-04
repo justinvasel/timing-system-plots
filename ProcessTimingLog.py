@@ -1,3 +1,11 @@
+# /////////////////////////////////////////////////////////////////////////////
+#  NOvA TIMING SYSTEM LOG PARSER
+#  \brief   A script to parse a timing system log file and write information
+#           to the database
+#  \author  Justin Vasel <jvasel@indiana.edu>
+#  \date    February 2017
+# /////////////////////////////////////////////////////////////////////////////
+
 __version__ = 'v0.1.0'
 
 # Python modules
