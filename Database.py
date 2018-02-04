@@ -48,5 +48,11 @@ class TDU(Base):
     id = Column(Integer, primary_key = True)
     hostname = Column(String)
 
+class TCR(Base):
+    __tablename__ = 'tcrs'
+
+    id = Column(Integer, primary_key = True)
+    tdu_id = Column(Integer, ForeignKey('tdus.id'), nullable = False)
+    delta = Column(Integer, nullable = False)
 
 Base.metadata.create_all(engine)
