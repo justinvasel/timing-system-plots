@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 import Config as config
 
-engine = create_engine(config.SQL_DATABASE, echo = True)
+engine = create_engine(config.SQL_DATABASE, echo = config.DEBUG)
 Base = declarative_base()
 
 
