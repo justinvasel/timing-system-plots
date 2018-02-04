@@ -4,6 +4,7 @@ __version__ = 'v0.1.0'
 import argparse
 import re
 import sys
+import logging
 # App-specific modules
 import Config as config
 import Database as db
@@ -14,6 +15,10 @@ parser.add_argument('logfile', help = 'Path to logfile to process')
 parser.add_argument('--version', action = 'version', version = '%(prog)s {}'.format(__version__))
 args = parser.parse_args()
 
+# Configure logging
+logging.basicConfig(level = logging.DEBUG if config.DEBUG else logging.INFO, \
+                    format = '%(asctime)-15s %(message)s')
+
 # Open log file
 log = open(args.logfile, 'r')
 lines = log.readlines()
@@ -21,7 +26,7 @@ lines = log.readlines()
 # Check with database about log file
 logfilename = args.logfile.split('/')[-1]
 if db.session.query(db.Logfile).filter(db.Logfile.filename == logfilename).first() == None:
-    print "Adding {} to the database".format(logfilename)
+    logging.info("Adding {} to the database".format(logfilename))
     db.session.add(db.Logfile(filename = logfilename))
 
 # Loop over each line of the log file
@@ -34,25 +39,18 @@ for lineno in range(0, len(lines)):
         continue
     msgType = match.group(1)
 
-    if config.DEBUG == True:
-        print('Found MSG : {}'.format(msgType))
-
     # Perform an appropriate action depending on the message type
     if msgType == 'SpillSent':
-        if config.DEBUG == True:
-            print('I will process a {} message type'.format(msgType))
+        logging.debug('I will process a {} message type'.format(msgType))
 
     if msgType == 'TimeDrift':
-        if config.DEBUG == True:
-            print('I will process a {} message type'.format(msgType))
+        logging.debug('I will process a {} message type'.format(msgType))
 
     if msgType == 'HeartBeat':
-        if config.DEBUG == True:
-            print('I will process a {} message type'.format(msgType))
+        logging.debug('I will process a {} message type'.format(msgType))
 
     if msgType == 'TimeSync':
-        if config.DEBUG == True:
-            print('I will process a {} message type'.format(msgType))
+        logging.debug('I will process a {} message type'.format(msgType))
 
     # print "Next line: ", lines[lineno + 1].rstrip()
 
