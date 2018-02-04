@@ -1,12 +1,15 @@
 from sqlalchemy import create_engine, ForeignKey
 from sqlalchemy import Column, DateTime, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 import Config as config
 
 engine = create_engine(config.SQL_DATABASE, echo = config.DEBUG)
 Base = declarative_base()
 
+Session = sessionmaker(bind = engine)
+session = Session()
 
 class Logfile(Base):
     __tablename__ = 'logfiles'
