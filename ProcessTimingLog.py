@@ -36,7 +36,7 @@ lines = log.readlines()
 # Check with database about log file
 logfilename = args.logfile.split('/')[-1]
 if db.session.query(db.Logfile).filter(db.Logfile.filename == logfilename).first() == None:
-    logging.info("Adding {} to the database".format(logfilename))
+    logging.info('Adding {} to the database'.format(logfilename))
     db.session.add(db.Logfile(filename = logfilename))
 
 # Loop over each line of the log file
