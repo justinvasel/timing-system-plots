@@ -17,7 +17,7 @@ import logging
 # App-specific modules
 import Config as config
 import Database as db
-from Utilities import NovaTimeConvert
+from Utilities import NovaTimeConvert, progressBar
 
 # Argument parsing
 parser = argparse.ArgumentParser(description = 'Timing System Log File Parser')
@@ -41,7 +41,9 @@ if db.session.query(db.Logfile).filter(db.Logfile.filename == logfilename).first
 
 # Loop over each line of the log file
 for lineno in range(0, len(lines)):
-    line = lines[lineno].rstrip()
+    line = lines[lineno].rstrip()    
+    if lineno % 1000 == 0:
+        progressBar(lineno, len(lines))
 
     # Get the message type
     match = re.match(r'%MSG-i (.*): .*', line, re.M|re.I)
