@@ -38,6 +38,9 @@ logfilename = args.logfile.split('/')[-1]
 if db.session.query(db.Logfile).filter(db.Logfile.filename == logfilename).first() == None:
     logging.info('Adding {} to the database'.format(logfilename))
     db.session.add(db.Logfile(filename = logfilename))
+else:
+    logging.info('This file ({}) has already been processed. Skipping it.'.format(logfilename))
+    sys.exit()
 
 # Loop over each line of the log file
 for lineno in range(0, len(lines)):
