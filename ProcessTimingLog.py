@@ -17,7 +17,7 @@ import logging
 # App-specific modules
 import Config as config
 import Database as db
-from Utilities import NovaTimeConvert
+from Utilities import NovaTimeConvert, progressBar
 
 # Argument parsing
 parser = argparse.ArgumentParser(description = 'Timing System Log File Parser')
@@ -36,12 +36,17 @@ lines = log.readlines()
 # Check with database about log file
 logfilename = args.logfile.split('/')[-1]
 if db.session.query(db.Logfile).filter(db.Logfile.filename == logfilename).first() == None:
-    logging.info("Adding {} to the database".format(logfilename))
+    logging.info('Adding {} to the database'.format(logfilename))
     db.session.add(db.Logfile(filename = logfilename))
+else:
+    logging.info('This file ({}) has already been processed. Skipping it.'.format(logfilename))
+    sys.exit()
 
 # Loop over each line of the log file
 for lineno in range(0, len(lines)):
-    line = lines[lineno].rstrip()
+    line = lines[lineno].rstrip()    
+    if lineno % 1000 == 0:
+        progressBar(lineno, len(lines))
 
     # Get the message type
     match = re.match(r'%MSG-i (.*): .*', line, re.M|re.I)
@@ -69,7 +74,7 @@ for lineno in range(0, len(lines)):
             db.session.add(db.SpillType(id = spillTypeID, name = spillTypeName, evtcode = spillAccelEvt))
 
         # Update database with spill
-        db.session.add(db.Spill(spill_type_id = spillTypeID, time_spillserver = spillTime))
+        db.session.add(db.Spill(spill_type_id = spillTypeID, time = spillTime))
 
     if msgType == 'TimeDrift':
         logging.debug('I will process a {} message type'.format(msgType))
@@ -79,8 +84,5 @@ for lineno in range(0, len(lines)):
 
     if msgType == 'TimeSync':
         logging.debug('I will process a {} message type'.format(msgType))
-
-    if lineno > 100:
-        break
 
 db.session.commit()
