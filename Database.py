@@ -51,9 +51,12 @@ class SpillForwarded(Base):
     __tablename__ = 'spillsForwarded'
     
     id = Column(Integer, primary_key = True)
+    spill_type_id = Column(Integer, ForeignKey('spill_types.id'), nullable = False)
     time_spillserver = Column(Integer, ForeignKey('spills.time'))
     detector_id = Column(Integer, ForeignKey('detectors.id'))
-    time = Column(Integer)
+    timeBegin = Column(Integer)
+    timeEnd = Column(Integer)
+    
 
 class Heartbeat(Base):
     __tablename__ = 'heartbeats'

@@ -74,7 +74,7 @@ for lineno in range(0, len(lines)):
             db.session.add(db.SpillType(id = spillTypeID, name = spillTypeName, evtcode = spillAccelEvt))
 
         # Update database with spill
-        db.session.add(db.Spill(spill_type_id = spillTypeID, time_spillserver = spillTime))
+        db.session.add(db.Spill(spill_type_id = spillTypeID, time = spillTime))
 
     if msgType == 'TimeDrift':
         logging.debug('I will process a {} message type'.format(msgType))
