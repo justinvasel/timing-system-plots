@@ -85,7 +85,4 @@ for lineno in range(0, len(lines)):
     if msgType == 'TimeSync':
         logging.debug('I will process a {} message type'.format(msgType))
 
-    if lineno > 100:
-        break
-
 db.session.commit()
