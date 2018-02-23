@@ -78,9 +78,26 @@ for lineno in range(0, len(lines)):
 
     if msgType == 'TimeDrift':
         logging.debug('I will process a {} message type'.format(msgType))
+        msgBody = lines[lineno + 1].rstrip()
+        
+        # Parse message body
+        match = re.match(r'TDU drift .* (tdu-.*) Time Delta from Reference: (\d+) at Novatime: (\d+)', msgBody, re.M|re.I)
+        host = match.group(1)
+        delta = int(match.group(2))
+        time = NovaTimeConvert.convertNovaTimeToUnixTime(int(match.group(3)))
+        
+        db.session.add(db.TCR(tdu_id = host, delta = delta, time = time))
+
 
     if msgType == 'HeartBeat':
         logging.debug('I will process a {} message type'.format(msgType))
+        msgBody = lines[lineno + 1].rstrip()
+        
+        # Parse message body
+        match = re.match(r'.* novaTime .* (\d+)', msgBody, re.M|re.I)
+        heartBeatTime = NovaTimeConvert.convertNovaTimeToUnixTime(int(match.group(1)))
+        
+        db.session.add(db.Heartbeat(time = heartBeatTime, app = 'NssTDUApp'))
 
     if msgType == 'TimeSync':
         logging.debug('I will process a {} message type'.format(msgType))
