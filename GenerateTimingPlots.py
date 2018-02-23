@@ -10,4 +10,9 @@ import code
 import Config as config
 from Plots import SpillPlots
 
-SpillPlots.SpillCounts()
+timeBegin = 1518908400
+timeEnd = 1518994800
+
+# SPILL PLOTS
+SpillPlots.SpillCounts(timeBegin, timeEnd)
+SpillPlots.SpillCountsVsTime(timeBegin, timeEnd)
