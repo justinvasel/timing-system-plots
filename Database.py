@@ -62,7 +62,7 @@ class Heartbeat(Base):
     __tablename__ = 'heartbeats'
 
     id = Column(Integer, primary_key = True)
-    time = Column(DateTime)
+    time = Column(Integer)
     app = Column(String)
 
 class TDU(Base):
@@ -75,6 +75,7 @@ class TCR(Base):
     __tablename__ = 'tcrs'
 
     id = Column(Integer, primary_key = True)
+    time = Column(Integer)
     tdu_id = Column(Integer, ForeignKey('tdus.id'), nullable = False)
     delta = Column(Integer, nullable = False)
 
